@@ -1,0 +1,53 @@
+{{define "content"}}
+{{if eq $.Renamed true }}
+<font size="3" color="green">Файл {{$.OldName}} был успешно обработан!</font>
+{{end}}
+
+<p>
+<font class="header">Фильмы</font> <br>
+<em>(Свободно {{$.FreeSpace}})</em>
+</p>
+<br>
+
+<table>
+	<tr> 
+		<th>Имя</th><th>Новое имя</th><th>Папка</th><th>Кнопка</th>
+	</tr>
+	{{range $index, $element := $.Folders}}
+	<tr>
+		<form action="/folder/{{$.CurTab}}" method="post">
+		<td><b>{{$element}}</b><input type="hidden" name="old_name" value="{{$element}}"></td>
+		<td><input type="text" name="new_name"></td>
+		<td><select name="new_folder">
+			<option disabled>Выберите папку</option>
+			{{range $f_element := $.Tabs}}
+			{{if ne $f_element $.CurTab}}
+			<option {{if eq $f_element "Фильмы"}} selected {{end}} value="{{$f_element}}">{{$f_element}}</option>
+			{{end}}
+			{{end}}
+		</select>
+		</td>
+		<td><input type="submit" value="Переместить!"></td>
+		</form>
+	</tr>
+	{{end}}
+	{{range $index, $element := $.Files}}
+	<tr>
+		<form action="/folder/{{$.CurTab}}" method="post">
+		<td>{{$element}} <input type="hidden" name="old_name" value="{{$element}}"></td>
+		<td><input type="text" name="new_name"></td>
+		<td><select name="new_folder">
+			<option disabled>Выберите папку</option>
+			{{range $f_element := $.Tabs}}
+			{{if ne $f_element $.CurTab}}
+			<option {{if eq $f_element "Фильмы"}} selected {{end}} value="{{$f_element}}">{{$f_element}}</option>
+			{{end}}
+			{{end}}
+		</select>
+		</td>
+		<td><input type="submit" value="Переместить!"></td>
+		</form>
+	</tr>
+	{{end}}
+</table>
+{{end}}
